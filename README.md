@@ -72,4 +72,4 @@ I've created this library originaly for my own project. I've built a custom Ardu
 - displays metrics and status on built-in display
 - uploads real-time metrics to cloud to display them for me on website and later analysis
 
-![regulator](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/build-open.jpg) ![regulator](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/build-display.jpg)
+| ![regulator](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/build-open.jpg) | ![regulator](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/build-display.jpg) |
