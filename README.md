@@ -5,7 +5,7 @@ Now its time to enhance your central heating system with Arduino. Using this lib
 #### What is it good for? ####
 
 - Creating your own central heating thermostat that can be controlled via website or mobile phone
-- Monitoring communication between thermostat and boiler and overseeing real-time heating status via website or mobile phone
+- Monitoring communication between thermostat and boiler and overseeing real-time heating status
 - Combining your boiler with secondary heating source (fireplace, solar collectors) via custom built regulator
 - ... and many more
 
@@ -63,3 +63,13 @@ Note that you won't be able to use libraries that are using Timer2 or rising sig
 
 Tested with Arduino Nano and Arduino Uno boards.
 
+## The result ##
+
+I've created this library originaly for my own project. I've built a custom Arduino based regulator to control central heating combining gas boiler and water heating fireplace. Central heating is still controlled by thermostat placed in living room. Regulator is gateway between thermostat and boiler and serves several purposes:
+
+- decides whether central heating should be supplied with hot water from gas boiler or fireplace
+- controls pump and mixing valve
+- displays metrics and status on built-in display
+- uploads real-time metrics to cloud to display them for me on website and later analysis
+
+![regulator](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/build-open.jpg) ![regulator](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/build-display.jpg)
