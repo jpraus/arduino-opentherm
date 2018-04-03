@@ -21,7 +21,7 @@ Interface consists of three parts that can be used separately:
 
 - **master interface**: to send and receive data from your master device (thermostat) and to supply it with power
 - **slave interface**: to send and receive data from your slave device (boiler)
-- **power supply**: to supply 24V to thermostat via master interface and 5V to Arduino board
+- **power supply**: to supply 24V to thermostat via master interface and 5V to an Arduino board
 
 ![interface schmetics](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/eagle-opentherm-schema.png)
 
@@ -57,9 +57,9 @@ These examles should give you enough information to build your own code using Op
 Library uses following Arduino resources:
 
 - **Timer2** - to properly read and write encoded data bites to bus
-- **Digital pin rising signal interrupt** - input is monitored for incomming data packets in order to save precious computing time on CPU. Only digital pins D2 and D3 are capable of this functionality on Arduino Uno and Arduino Nano boards.
+- **Pin changed interrupt** - bus is monitored for incomming data packets in order to save precious computing time on CPU. Only digital pins D2 and D3 are capable of this functionality on Arduino Uno and Arduino Nano boards.
 
-Note that you won't be able to use libraries that are using Timer2 or rising signal interrupt as well (for example Servo library).
+Note that you won't be able to use libraries that are using Timer2 or pin changed interrupt together with this library (for example Servo library).
 
 Tested with Arduino Nano and Arduino Uno boards.
 
@@ -68,9 +68,9 @@ Tested with Arduino Nano and Arduino Uno boards.
 I've created this library originaly for my own project. I've built a custom Arduino based regulator to control central heating combining gas boiler and water heating fireplace. Central heating is still controlled by thermostat placed in living room. Regulator is gateway between thermostat and boiler and serves several purposes:
 
 - decides whether central heating should be supplied with hot water from gas boiler or fireplace
-- controls pump and mixing valve
+- controls pumps and mixing valve
 - displays metrics and status on built-in display
-- uploads real-time metrics to cloud to display them for me on website and later analysis
+- uploads real-time metrics to cloud to display them on website for later analysis
 
 | ![regulator](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/build-open.jpg) | ![regulator](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/build-display.jpg) |
 |--------|--------|
