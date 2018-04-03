@@ -52,7 +52,7 @@ Library contains 3 examples to test out your setup. These examples are configure
 
 These examles should give you enough information to build your own code using Opentherm library. Check out header file of library source code to see methods documentation.
 
-## Behind the scene ##
+## Behind the scenes ##
 
 Library uses following Arduino resources:
 
