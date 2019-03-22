@@ -93,3 +93,5 @@ Library uses following Arduino resources:
 Note that you won't be able to use libraries that are using Timer2 or pin changed interrupt together with this library (for example Servo library).
 
 Tested with Arduino Nano and Arduino Uno boards.
+
+![Arduino UNO OpenTherm shield](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/otshield_with_thermostat.JPG)
