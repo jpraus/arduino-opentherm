@@ -18,25 +18,25 @@ This repo contains both Arduino library and hardware adapter.
 
 In order to connect your Arduino board to Opentherm device, you need to create a special hardware **interface** to convert voltage and current levels for Arudino to be able to handle. Voltage on Opentherm bus rises as high as 24V which would easily burn up your Arduino if connected to wires directly.
 
-#### OpenTherm Arduino shield ####
+#### Buy or DIY ####
 
-The easiest way to get the hardware is to purchase a Arduino shield kit from my [Tindie store](https://www.tindie.com/products/jiripraus/opentherm-arduino-shield-diy-kit). It's open source so you can build it on your own. You will find all the details below.
+The easiest way to get the hardware is to purchase a Arduino shield kit from my [Tindie store](https://www.tindie.com/products/jiripraus/opentherm-arduino-shield-diy-kit). On the other hand the shield is Open Source so you can manufacture and buy all the components on your own!
 
-#### Schematics ####
+#### Features ####
 
-Based on [otgw.tclcode.com](http://otgw.tclcode.com) project.
-
-Interface consists of three parts that can be used separately:
-
-- **master interface** - to send and receive data from your master device (thermostat) and to supply it with power
-- **slave interface** - to send and receive data from your slave device (boiler)
-- **power supply** - to provide 24V to thermostat via master interface and 5V to an Arduino board
+- OpenTherm slave interface to communicate with a boiler
+- OpenTherm master interface to communicate with a thermostat
+- can implement master, slave and gateway modes
+- 5V 3A built-in power supply
+- Arduino UNO compatible shield
 
 ![interface schmetics](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/shield-schema-doc.png)
 
-#### Board ####
+Based on [otgw.tclcode.com](http://otgw.tclcode.com) project.
 
-There are [Gerber files](gerber/) included in the repository. Or you can get the DIY KIT from my [Tindie store](https://www.tindie.com/products/jiripraus/opentherm-arduino-shield-diy-kit).
+#### Fabrication files ####
+
+Are you able to manufacture the PCB yourself? There are [Gerber files](gerber/) included in the repository. Or you can get the DIY KIT from my [Tindie store](https://www.tindie.com/products/jiripraus/opentherm-arduino-shield-diy-kit).
 
 #### Parts list ####
 
