@@ -1,17 +1,22 @@
 # Opentherm IO library for Arduino
 
-Now its time to enhance your central heating system with Arduino. Using this library and special hardware interface provided below you will be able to create your own thermostat to control Opentherm boiler or build a man-in-the-middle gateway to capture or alter communication running between your thermostat and boiler.
+Have you ever wondered when and why is your boiler running and heating your home? Do you want to automate your heating system with Arduino? The OpenTherm IO library together with an Arduino OpenTherm shield is designed for you. It will allow you to monitor and control your OpenTherm device with Arduino.
 
 #### What is it good for? ####
 
-- Creating your own central heating thermostat that can be controlled via website or mobile phone
-- Monitoring communication between thermostat and boiler and overseeing real-time heating status
-- Combining your boiler with secondary heating source (fireplace, solar collectors) via custom built regulator
+- **Boiler** - create your own Arduino-based boiler with an existing OpenTherm thermostat.
+- **Thermostat** - use the shield to build your own Arduino-based thermostat to fully take over your boiler and home heating. Perfect for home automation. This application only requires an external 5V power supply.
+- **Gateway/Monitor** - place an OpenTherm shield into the lines between the existing boiler and thermostat and create a monitor to watch when how the boiler is heating your home.
+- **Man-in-the-middle** -  instead of just listening to the communication like in gateway mode you can also alter the communication that is happening between the boiler and thermostat and adjusts the behavior as you want. Perfect for creating your own heating regulator.
 - ... and many more
 
 ## Hardware requirements ##
 
 In order to connect your Arduino board to Opentherm device, you need to create a special hardware **interface** to convert voltage and current levels for Arudino to be able to handle. Voltage on Opentherm bus rises as high as 24V which would easily burn up your Arduino if connected to wires directly.
+
+#### OpenTherm Arduino shield ####
+
+The easiest way to get the hardware is to purchase a Arduino shield kit from my [Tindie store](https://www.tindie.com/products/jiripraus/opentherm-arduino-shield-diy-kit). It is open source so you can build it on your own. You will find all the details below.
 
 #### Schematics ####
 
