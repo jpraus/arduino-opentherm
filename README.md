@@ -2,6 +2,10 @@
 
 Have you ever wondered when and why is your boiler running and heating your home? Do you want to automate your heating system with Arduino? The OpenTherm IO library together with an Arduino OpenTherm shield is designed for you. It will allow you to monitor and control your OpenTherm device with Arduino.
 
+This repo contains both Arduino library and hardware adapter.
+
+![Arduino UNO OpenTherm shield](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/otshield.jpg)
+
 #### What is it good for? ####
 
 - **Boiler** - create your own Arduino-based boiler with an existing OpenTherm thermostat.
@@ -10,13 +14,13 @@ Have you ever wondered when and why is your boiler running and heating your home
 - **Man-in-the-middle** -  instead of just listening to the communication like in gateway mode you can also alter the communication that is happening between the boiler and thermostat and adjusts the behavior as you want. Perfect for creating your own heating regulator.
 - ... and many more
 
-## Hardware requirements ##
+## Arduino shiled ##
 
 In order to connect your Arduino board to Opentherm device, you need to create a special hardware **interface** to convert voltage and current levels for Arudino to be able to handle. Voltage on Opentherm bus rises as high as 24V which would easily burn up your Arduino if connected to wires directly.
 
 #### OpenTherm Arduino shield ####
 
-The easiest way to get the hardware is to purchase a Arduino shield kit from my [Tindie store](https://www.tindie.com/products/jiripraus/opentherm-arduino-shield-diy-kit). It is open source so you can build it on your own. You will find all the details below.
+The easiest way to get the hardware is to purchase a Arduino shield kit from my [Tindie store](https://www.tindie.com/products/jiripraus/opentherm-arduino-shield-diy-kit). It's open source so you can build it on your own. You will find all the details below.
 
 #### Schematics ####
 
@@ -28,26 +32,22 @@ Interface consists of three parts that can be used separately:
 - **slave interface**: to send and receive data from your slave device (boiler)
 - **power supply**: to supply 24V to thermostat via master interface and 5V to an Arduino board
 
-![interface schmetics](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/eagle-opentherm-schema.png)
-
-#### Board example ####
-
-![interface board](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/eagle-opentherm.png)
+![interface schmetics](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/shield-schema.png)
 
 _Power supply from interface board is needed only if you wish to connect to master device (thermostat). Otherwise you won't need both **master interface** and **power supply**. You can power your Arduino board and slave interface with standard 5V power supply._
 
-## Wiring up with Arduino board ##
+## How it is wired up with Arduino ##
 
 Wire up interface board and Arduino as following:
 
 - **MASTER-OUT** of interface to pin **D4** of Arduino
-- **MASTER-IN** to pin **D2**
+- **MASTER-IN** to pin **D2** (requires pin changed interrupt)
 - **SLAVE-OUT** to pin **D5**
-- **SLAVE-IN** to pin **D3**
+- **SLAVE-IN** to pin **D3** (requires pin changed interrupt)
 - **VCC** to **5V**
 - **GND** to **GND**
 
-## Working with examples ##
+## Working with library ##
 
 Library contains 3 examples to test out your setup. These examples are configured to use pins defined above, but library will allow you to change pins to your custom ones.
 
@@ -67,15 +67,3 @@ Library uses following Arduino resources:
 Note that you won't be able to use libraries that are using Timer2 or pin changed interrupt together with this library (for example Servo library).
 
 Tested with Arduino Nano and Arduino Uno boards.
-
-## The result ##
-
-I've created this library originaly for my own project. I've built a custom Arduino based regulator to control central heating combining gas boiler and water heating fireplace. Central heating is still controlled by thermostat placed in living room. Regulator is gateway between thermostat and boiler and serves several purposes:
-
-- decides whether central heating should be supplied with hot water from gas boiler or fireplace
-- controls pumps and mixing valve
-- displays metrics and status on built-in display
-- uploads real-time metrics to cloud to display them on website for later analysis
-
-| ![regulator](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/build-open.jpg) | ![regulator](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/build-display.jpg) |
-|--------|--------|
