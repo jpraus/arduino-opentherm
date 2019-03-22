@@ -14,7 +14,7 @@ This repo contains both Arduino library and hardware adapter.
 - **Man-in-the-middle** -  instead of just listening to the communication like in gateway mode you can also alter the communication that is happening between the boiler and thermostat and adjusts the behavior as you want. Perfect for creating your own heating regulator.
 - ... and many more
 
-## Arduino shiled ##
+## Arduino shield ##
 
 In order to connect your Arduino board to Opentherm device, you need to create a special hardware **interface** to convert voltage and current levels for Arudino to be able to handle. Voltage on Opentherm bus rises as high as 24V which would easily burn up your Arduino if connected to wires directly.
 
