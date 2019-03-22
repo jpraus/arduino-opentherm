@@ -36,7 +36,7 @@ Interface consists of three parts that can be used separately:
 
 #### Board ####
 
-There are [Gerber files](gerber/) included in the repository. Or you can get the DIY KIT from my [Tindie store]
+There are [Gerber files](gerber/) included in the repository. Or you can get the DIY KIT from my [Tindie store](https://www.tindie.com/products/jiripraus/opentherm-arduino-shield-diy-kit).
 
 #### Parts list ####
 
