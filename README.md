@@ -32,7 +32,7 @@ Interface consists of three parts that can be used separately:
 - **slave interface**: to send and receive data from your slave device (boiler)
 - **power supply**: to supply 24V to thermostat via master interface and 5V to an Arduino board
 
-![interface schmetics](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/shield-schema.png)
+![interface schmetics](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/shield-schema-doc.png)
 
 _Power supply from interface board is needed only if you wish to connect to master device (thermostat). Otherwise you won't need both **master interface** and **power supply**. You can power your Arduino board and slave interface with standard 5V power supply._
 
