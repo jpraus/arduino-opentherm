@@ -28,23 +28,49 @@ Based on [otgw.tclcode.com](http://otgw.tclcode.com) project.
 
 Interface consists of three parts that can be used separately:
 
-- **master interface**: to send and receive data from your master device (thermostat) and to supply it with power
-- **slave interface**: to send and receive data from your slave device (boiler)
-- **power supply**: to supply 24V to thermostat via master interface and 5V to an Arduino board
+- **master interface** - to send and receive data from your master device (thermostat) and to supply it with power
+- **slave interface** - to send and receive data from your slave device (boiler)
+- **power supply** - to provide 24V to thermostat via master interface and 5V to an Arduino board
 
 ![interface schmetics](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/shield-schema-doc.png)
 
-_Power supply from interface board is needed only if you wish to connect to master device (thermostat). Otherwise you won't need both **master interface** and **power supply**. You can power your Arduino board and slave interface with standard 5V power supply._
+#### Board ####
 
-## How it is wired up with Arduino ##
+There are [Gerber files](gerber/) included in the repository. Or you can get the DIY KIT from my [Tindie store]
 
-Wire up interface board and Arduino as following:
+#### Parts list ####
+
+- C1 100u/35V electrolytic capacitor
+- C2 100u electrolytic capacitor
+- D1 SS24
+- D2 zener diode 4V7 SOD80C
+- D3 zener diode 13V SOD80C
+- D4 zener diode 4V3 SOD80C
+- D5,D6,D7,D8 - 4148
+- L1 150uH CDRH104RT
+- LED1 blue 0805 LED
+- LED2 green 0805 LED
+- LED3 red 0805 LED
+- Q1,Q2,Q3,Q5 BC858B SOT-23
+- Q4 BC848C SOT-23
+- R1,R4 330 0805
+- R2 220 0805
+- R3,R7 100 0805
+- R5,R11 10k 0805
+- R6,R8 33k 0805
+- R9 39 0805
+- R10 4k7 0805
+- R12,R13,R14 1k 0805
+- U1 LM2596SX-5.0
+- U2,U3 PC817B 
+
+#### How it is wired up with Arduino ####
 
 - **MASTER-OUT** of interface to pin **D4** of Arduino
 - **MASTER-IN** to pin **D2** (requires pin changed interrupt)
 - **SLAVE-OUT** to pin **D5**
 - **SLAVE-IN** to pin **D3** (requires pin changed interrupt)
-- **VCC** to **5V**
+- **+5V** to **5V**
 - **GND** to **GND**
 
 ## Working with library ##
@@ -57,7 +83,7 @@ Library contains 3 examples to test out your setup. These examples are configure
 
 These examles should give you enough information to build your own code using Opentherm library. Check out header file of library source code to see methods documentation.
 
-## Behind the scenes ##
+#### Behind the scenes ####
 
 Library uses following Arduino resources:
 
