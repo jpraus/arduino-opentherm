@@ -2,6 +2,8 @@
 
 Have you ever wondered when and why is your boiler running and heating your home? Do you want to automate your heating system with Arduino? The OpenTherm IO library together with an Arduino OpenTherm shield is designed for you. It will allow you to monitor and control your OpenTherm device with Arduino.
 
+[Connect Your Central Heating to Arduino](https://www.hackster.io/jiripraus/connect-your-central-heating-to-arduino-7818f5) - article describing the use of shield and library.
+
 This repo contains both Arduino library and hardware adapter.
 
 ![Arduino UNO OpenTherm shield](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/otshield.jpg)
@@ -11,7 +13,7 @@ This repo contains both Arduino library and hardware adapter.
 - Create your own Arduino-based **boiler** with an existing OpenTherm thermostat. Most unlikely anybody would do that but it is possible.
 - Use the shield to build your own Arduino-based **thermostat** to fully take over your boiler and home heating. Perfect for home automation. This application only requires an external 5V power supply.
 - Place an OpenTherm shield into the lines between the existing boiler and thermostat and create a **monitor** to watch when and how the boiler is heating your home. You can even intercept the communication to for example wirelessly control the heating.
-- OpenTherm allows having a **man-in-the-middle** device that communicates with both boiler and thermostat. This is is how I used the shield to create an [OpenTherm regulator](https://hackaday.io/project/162819-opentherm-regulator).
+- OpenTherm allows having a **man-in-the-middle** device that communicates with both boiler and thermostat. This is how I used the shield to create an [OpenTherm regulator](https://hackaday.io/project/162819-opentherm-regulator).
 
 ## Arduino shield ##
 
