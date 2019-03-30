@@ -96,3 +96,7 @@ Note that you won't be able to use libraries that are using Timer2 or pin change
 Tested with Arduino Nano and Arduino Uno boards.
 
 ![Arduino UNO OpenTherm shield](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/otshield_with_thermostat.JPG)
+
+## Warning ##
+
+**Please be aware that using this hardware can damage your boiler or thermostat. You may also void your boiler warranty by installing this hardware. Please consult with your boiler manufacturer. I am not responsible for any damage caused by this shield.**
