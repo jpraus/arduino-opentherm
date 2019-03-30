@@ -74,6 +74,10 @@ Are you able to manufacture the PCB yourself? There are [Gerber files](gerber/) 
 - **+5V** to **5V**
 - **GND** to **GND**
 
+## Testing out the hardware ##
+
+TBD
+
 ## Working with library ##
 
 Library contains 3 examples to test out your setup. These examples are configured to use pins defined above, but library will allow you to change pins to your custom ones.
