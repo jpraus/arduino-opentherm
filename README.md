@@ -80,9 +80,25 @@ It's not wise to plug the shield with your thermostat or boiler until you test i
 
 ### Power supply
 
+## Power supply
+
 1. First, check whether there is no short circuit between two pins on the 24V RED terminal. Use the continuity function of your multimeter.
-2. Now connect the 24V power supply, keep in mind the polarity of the red connector. The positive voltage on + sign (left pin) and ground to - sign on (right pin). Red LED next to the RED terminal will now light up.
-3. Mount the shield on Arduino UNO (not connected to the computer). It should power up.
+2. Now connect the 24V power supply, keep in mind the polarity of the red connector. Connect the positive voltage wire to + sign pin (left) and ground wire to - sign pin (right). Red ON LED next to the RED terminal will now light up.
+3. Blue RxB LED will also light up, but don't might it. It's perfectly fine.
+4. Check for 5V between +5V pin (fifth from the bottom on the right side) and ground pin (right above +5V pin)
+
+## Thermostat interface
+
+Keep the 24V power supply connected.
+
+1. Measure now voltage on BLUE THERM terminal with a multimeter. It should read 24V. Polarity is not important.
+2. Next measure current on the same BLUE terminal. It should read a value between 5mA and 9mA. This means a low state of the line.
+3. If you connect MASTER-OUT pin (digital pin 4 / fifth pin from the top on the left side) to the any of the ground pins, the current on BLUE terminal should increase to a value between 17mA and 23mA. This is a high state of the transceiver line. Outbound thermostat communication is working. Disconnect the pin from the ground.
+4. Interconnect BLUE THERM and GREEN BOILER terminals with 2 wires. This will simulate a boiler for thermostat interface and thermostat for a boiler interface. Measure now voltage on GREEN terminal, it should read a value between 15V and 18V.
+5. If you re-connect MASTER-OUT pin to the ground again (same as in step 3 above), blue RxB LED should go off. Inbound boiler communication is working.  Disconnect the pin from the ground.
+6. If you connect SLAVE-OUT pin (digital pin 5 / sixth pin from the top on the left side) to +5V pin, the green RxT LED should light up. The voltage on the GREEN terminal should drop to a value between 5V and 7V. This verifies that both outbound boiler and inbound thermostat communication is working.
+7. Mount the shield on Arduino UNO (disconnected from the computer). It should power up.
+8. Well done! Your shield is now ready to be connected to OpenTherm thermostat and boiler.
 
 ## Working with library ##
 
