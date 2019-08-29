@@ -76,7 +76,13 @@ Are you able to manufacture the PCB yourself? There are [Gerber files](gerber/) 
 
 ## Testing out the hardware ##
 
-TBD
+It's not wise to plug the shield with your thermostat or boiler until you test it out. Follow the checks below to make sure your shield is properly assembled. For most of these checks, you will need at least a multimeter capable of measuring voltage, current, and resistance.
+
+### Power supply
+
+1. First, check whether there is no short circuit between two pins on the 24V RED terminal. Use the continuity function of your multimeter.
+2. Now connect the 24V power supply, keep in mind the polarity of the red connector. The positive voltage on + sign (left pin) and ground to - sign on (right pin). Red LED next to the RED terminal will now light up.
+3. Mount the shield on Arduino UNO (not connected to the computer). It should power up.
 
 ## Working with library ##
 
