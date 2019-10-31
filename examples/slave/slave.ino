@@ -1,5 +1,10 @@
 #include <opentherm.h>
 
+// Wemos D1 R1
+//#define THERMOSTAT_IN 16
+//#define THERMOSTAT_OUT 4
+
+// Arduino UNO
 #define THERMOSTAT_IN 2
 #define THERMOSTAT_OUT 4
 

@@ -22,14 +22,14 @@ volatile byte OPENTHERM::_clock = 0;
 volatile byte OPENTHERM::_bitPos = 0;
 volatile unsigned long OPENTHERM::_data = 0;
 volatile bool OPENTHERM::_active = false;
-volatile int OPENTHERM::_timeoutMs = -1;
+volatile int OPENTHERM::_timeoutCounter = -1;
 
 #define STOP_BIT_POS 33
 
 void OPENTHERM::listen(byte pin, int timeout, void (*callback)()) {
   _stop();
   _pin = pin;
-  _timeoutMs = timeout;
+  _timeoutCounter = timeout * 5; // timer ticks at 5 ticks/ms
   _callback = callback;
 
   _listen();
@@ -41,12 +41,8 @@ void OPENTHERM::_listen() {
   _active = true;
   _data = 0;
   _bitPos = 0;
-  noInterrupts();
-  attachInterrupt(digitalPinToInterrupt(_pin), OPENTHERM::_risingSignalISR, RISING);
-  interrupts();
-  if (_timeoutMs > 0) {
-    _startTimeoutTimer(); // tick every 1ms
-  }
+
+  _startReadTimer();
 }
 
 void OPENTHERM::send(byte pin, OpenthermData &data, void (*callback)()) {
@@ -88,14 +84,12 @@ void OPENTHERM::stop() {
 
 void OPENTHERM::_stop() {
   if (_active) {
-    detachInterrupt(digitalPinToInterrupt(_pin)); 
     _stopTimer();
     _active = false;
   }
 }
 
-void OPENTHERM::_risingSignalISR() {
-  detachInterrupt(digitalPinToInterrupt(_pin));
+void OPENTHERM::_read() {
   _data = 0;
   _bitPos = 0;
   _mode = MODE_READ;
@@ -106,12 +100,18 @@ void OPENTHERM::_risingSignalISR() {
 
 void OPENTHERM::_timerISR() {
   if (_mode == MODE_LISTEN) {
-    if (_timeoutMs > 0) {
-      _timeoutMs --;
+    byte value = digitalRead(_pin);
+    if (value == 1) { // incoming data (rising signal)
+      _read();
     }
-    if (_timeoutMs == 0) {
-      _mode = MODE_ERROR_TOUT;
-      _stop();
+    else {
+      if (_timeoutCounter > 0) {
+        _timeoutCounter --;
+      }
+      if (_timeoutCounter == 0) {
+        _mode = MODE_ERROR_TOUT;
+        _stop();
+      }
     }
   }
   else if (_mode == MODE_READ) {

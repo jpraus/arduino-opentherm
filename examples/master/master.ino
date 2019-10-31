@@ -1,5 +1,10 @@
 #include <opentherm.h>
 
+// Wemos D1 R1
+//#define BOILER_IN 5
+//#define BOILER_OUT 14
+
+// Arduino UNO
 #define BOILER_IN 3
 #define BOILER_OUT 5
 
