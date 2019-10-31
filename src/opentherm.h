@@ -180,8 +180,14 @@ class OPENTHERM {
      */
     static void printToSerial(OpenthermData &data);
 
+#ifdef AVR
     static void _risingSignalISR(); // this function needs to be public since its attached as interrupt handler
     static void _timerISR(); // this function needs to be public since its attached as interrupt handler
+#endif // END ESP8266
+#ifdef ESP8266
+    static void ICACHE_RAM_ATTR _risingSignalISR(); // this function needs to be public since its attached as interrupt handler
+    static void ICACHE_RAM_ATTR _timerISR(); // this function needs to be public since its attached as interrupt handler
+#endif // END ESP8266
 
   private:
     OPENTHERM() {}; // private constructor

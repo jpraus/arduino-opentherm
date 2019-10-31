@@ -178,10 +178,6 @@ void OPENTHERM::_timerISR() {
   }
 }
 
-ISR(TIMER2_COMPA_vect) { // Timer2 interrupt
-  OPENTHERM::_timerISR();
-}
-
 void OPENTHERM::_bitRead(byte value) {
   _data = (_data << 1) | value;
   _bitPos ++;
@@ -233,6 +229,11 @@ void OPENTHERM::_callCallback() {
   }
 }
 
+#ifdef AVR
+ISR(TIMER2_COMPA_vect) { // Timer2 interrupt
+  OPENTHERM::_timerISR();
+}
+
 // 5 kHz timer
 void OPENTHERM::_startReadTimer() {
   cli();
@@ -280,6 +281,43 @@ void OPENTHERM::_stopTimer() {
   TIMSK2 = 0;
   sei();
 }
+#endif // END AVR
+
+#ifdef ESP8266
+// 5 kHz timer
+void OPENTHERM::_startReadTimer() {
+  noInterrupts();
+  timer1_attachInterrupt(OPENTHERM::_timerISR);
+  timer1_enable(TIM_DIV16, TIM_EDGE, TIM_LOOP); // 5MHz (5 ticks/us - 1677721.4 us max)
+  timer1_write(1000); // 5kHz
+  interrupts();
+}
+
+// 2 kHz timer
+void OPENTHERM::_startWriteTimer() {
+  noInterrupts();
+  timer1_attachInterrupt(OPENTHERM::_timerISR);
+  timer1_enable(TIM_DIV16, TIM_EDGE, TIM_LOOP); // 5MHz (5 ticks/us - 1677721.4 us max)
+  timer1_write(2500); // 2kHz
+  interrupts();
+}
+
+// 1 kHz timer
+void OPENTHERM::_startTimeoutTimer() {
+  noInterrupts();
+  timer1_attachInterrupt(OPENTHERM::_timerISR);
+  timer1_enable(TIM_DIV16, TIM_EDGE, TIM_LOOP); // 5MHz (5 ticks/us - 1677721.4 us max)
+  timer1_write(5000); // 1kHz
+  interrupts();
+}
+
+void OPENTHERM::_stopTimer() {
+  noInterrupts();
+  timer1_disable();
+  timer1_detachInterrupt();
+  interrupts();
+}
+#endif // END ESP8266
 
 // https://stackoverflow.com/questions/21617970/how-to-check-if-value-has-even-parity-of-bits-or-odd
 bool OPENTHERM::_checkParity(unsigned long val) {

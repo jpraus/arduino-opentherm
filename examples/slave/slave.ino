@@ -10,7 +10,7 @@ void setup() {
   digitalWrite(THERMOSTAT_OUT, HIGH);
   pinMode(THERMOSTAT_OUT, OUTPUT); // low output = high current, high output = low current
 
-  Serial.begin(19200);
+  Serial.begin(115200);
 }
 
 /**

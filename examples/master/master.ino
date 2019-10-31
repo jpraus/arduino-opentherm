@@ -10,7 +10,7 @@ void setup() {
   digitalWrite(BOILER_OUT, HIGH);
   pinMode(BOILER_OUT, OUTPUT); // low output = high voltage, high output = low voltage
 
-  Serial.begin(19200);
+  Serial.begin(115200);
 }
 
 /**
