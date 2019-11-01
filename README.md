@@ -98,6 +98,10 @@ Keep the 24V power supply connected.
 7. Mount the shield on Arduino UNO (disconnected from the computer). It should power up.
 8. Well done! You are now ready to have some fun with the shield.
 
+### Compatibility with Wemos D1 (ESP8266)
+
+The shield is compatible with a Wemos D1 development board which is using ESP8266 instead of AVR chips. You only need to replace the original **R11** resistor with **4k7** resistor because Wemos D1 has 3.3V logic.
+
 ## Working with library ##
 
 Library contains 3 examples to test out your setup. These examples are configured to use pins defined above, but library will allow you to change pins to your custom ones.
