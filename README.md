@@ -80,8 +80,8 @@ It's not wise to plug the shield with your thermostat or boiler until you test i
 
 ### Power supply
 
-1. First, check whether there is no short circuit between two pins on the 24V RED terminal. Use the continuity function of your multimeter.
-2. Now connect the 24V power supply, keep in mind the polarity of the red connector. Connect the positive voltage wire to + pin (left) and ground wire to - pin (right). Red LED next to the RED terminal will now light up.
+1. Check whether there is no short circuit between two pins on the 24V RED terminal. Use the continuity function of your multimeter.
+2. Connect the 24V power supply, keep in mind the polarity of the red connector. Connect the positive voltage wire to + pin (left) and ground wire to - pin (right). Red LED next to the RED terminal will now light up.
 3. Blue RxB LED will also light up, but don't mind it now. It's perfectly fine.
 4. Check for 5V between +5V pin (fifth from the bottom on the right side) and ground pin (next one above +5V pin)
 
