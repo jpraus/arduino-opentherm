@@ -368,9 +368,16 @@ float OpenthermData::f88() {
 }
 
 void OpenthermData::f88(float value) {
-  valueHB = (byte) value;
-  float fraction = (value - valueHB);
-  valueLB = fraction * 256.0;
+  if (value >= 0) {
+    valueHB = (byte) value;
+    float fraction = (value - valueHB);
+    valueLB = fraction * 256.0;
+  }
+  else {
+    valueHB = (byte)(value - 1);
+    float fraction = (value - valueHB - 1);
+    valueLB = fraction * 256.0;
+  }
 }
 
 uint16_t OpenthermData::u16() {
