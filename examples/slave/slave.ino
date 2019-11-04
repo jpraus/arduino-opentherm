@@ -12,6 +12,7 @@ OpenthermData message;
 
 void setup() {
   pinMode(THERMOSTAT_IN, INPUT);
+  digitalWrite(THERMOSTAT_IN, HIGH); // pull up
   digitalWrite(THERMOSTAT_OUT, HIGH);
   pinMode(THERMOSTAT_OUT, OUTPUT); // low output = high current, high output = low current
 

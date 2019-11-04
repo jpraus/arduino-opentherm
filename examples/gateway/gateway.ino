@@ -16,9 +16,11 @@ OpenthermData message;
 
 void setup() {
   pinMode(THERMOSTAT_IN, INPUT);
+  digitalWrite(THERMOSTAT_IN, HIGH); // pull up
   digitalWrite(THERMOSTAT_OUT, HIGH);
   pinMode(THERMOSTAT_OUT, OUTPUT); // low output = high current, high output = low current
   pinMode(BOILER_IN, INPUT);
+  digitalWrite(BOILER_IN, HIGH); // pull up
   digitalWrite(BOILER_OUT, HIGH);
   pinMode(BOILER_OUT, OUTPUT); // low output = high voltage, high output = low voltage
 
