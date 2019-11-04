@@ -108,7 +108,7 @@ The shield and library code are compatible with a Wemos D1 development board whi
 - Cut the 5V trace on the back of the board
 - Wire up the optocoupler and the signal transistor to 3.3V with a short wire
 
-<img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev2-esp8266-R11.png" width="33%"></img> <img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev2-esp8266-trace.png" width="33%"></img> <img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev2-esp8266-3v3.png" width="33%"></img> 
+<img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev2-esp8266-R11.png" width="32%"></img> <img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev2-esp8266-trace.png" width="32%"></img> <img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev2-esp8266-3v3.png" width="32%"></img> 
 
 ## Working with library ##
 
