@@ -100,7 +100,15 @@ Keep the 24V power supply connected.
 
 ### Compatibility with Wemos D1 (ESP8266)
 
-The shield is compatible with a Wemos D1 development board which is using ESP8266 instead of AVR chips. You only need to replace the original **R11** resistor with **4k7** resistor because Wemos D1 has 3.3V logic.
+The shield and library code are compatible with a Wemos D1 development board which is using ESP8266 instead of AVR chips. However, ESP8266 is using 3.3V logic so to make the shield work, you need to alter it.
+
+**Rev2 boards**
+
+- Replace **R11** resistor with **4k7** resistor (instead of 10k)
+- Cut the 5V trace on the back of the board
+- Wire up the optocoupler and the signal transistor to 3.3V with a short wire
+
+<img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev2-esp8266-R11.png" width="33%"></img> <img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev2-esp8266-trace.png" width="33%"></img> <img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev2-esp8266-3v3.png" width="33%"></img> 
 
 ## Working with library ##
 
