@@ -4,7 +4,7 @@ Have you ever wondered when and why is your boiler running and heating your home
 
 [Connect Your Central Heating to Arduino](https://www.hackster.io/jiripraus/connect-your-central-heating-to-arduino-7818f5) - article describing the use of shield and library.
 
-This repo contains both Arduino library and hardware adapter.
+This repository contains both Arduino library and hardware adapter for **OpenTherm protocol 2.2** - see [specification](https://www.domoticaforum.eu/uploaded/Ard%20M/Opentherm%20Protocol%20v2-2.pdf).
 
 ![Arduino UNO OpenTherm shield](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/otshield.jpg)
 
