@@ -98,7 +98,7 @@ Keep the 24V power supply connected.
 7. Mount the shield on Arduino UNO (disconnected from the computer). It should power up.
 8. Well done! You are now ready to have some fun with the shield.
 
-### Self test
+### Self-test
 
 I've also prepared a self-test program that will test the hardware interface. Download [selftest.ino](https://github.com/jpraus/arduino-opentherm/blob/master/examples/selftest/selftest.ino) and upload it to your Arduino board. Setup the shield:
 
