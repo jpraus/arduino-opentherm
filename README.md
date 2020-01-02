@@ -85,7 +85,7 @@ It's not wise to plug the shield with your thermostat or boiler until you test i
 3. Blue RxT LED will also light up, but don't mind it now. It's perfectly fine.
 4. Check for 5V between +5V pin (fifth from the bottom on the right side) and ground pin (next one above +5V pin)
 
-### Thermostat interface
+### Interfaces
 
 Keep the 24V power supply connected.
 
@@ -97,6 +97,25 @@ Keep the 24V power supply connected.
 6. If you connect SLAVE-OUT pin (digital pin 5 / sixth pin from the top on the left side) to +5V pin, the blue RxT LED should go off. The voltage on the GREEN terminal should drop to a value between 5V and 7V. This verifies that both outbound boiler and inbound thermostat communication is working.
 7. Mount the shield on Arduino UNO (disconnected from the computer). It should power up.
 8. Well done! You are now ready to have some fun with the shield.
+
+### Self test
+
+I've also prepared a self-test program that will test the hardware interface. Download selftest.ino and upload it to your Arduino board. Setup the shield:
+
+1. Attach shield to Arduino
+2. Connect 24V power supply
+3. Interconnect BLUE THERM and GREEN BOILER terminals with each other with 2 wires.
+
+Self-test result should be:
+
+```
+OpenTherm gateway self-test
+
+Boiler inbound, thermostat outbound .. OK
+Boiler outbound, thermostat inbound .. OK
+```
+
+If it's not, do full hardware test above to identify the cause.
 
 ### Compatibility with Wemos D1 (ESP8266)
 
