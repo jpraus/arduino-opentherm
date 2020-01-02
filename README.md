@@ -127,6 +127,9 @@ The shield and library code are compatible with a Wemos D1 development board whi
 - Cut the 5V jumper on the back of the board
 - Solder the 3V3 jumper on the back of the board
 
+<img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev3-esp8266-R11.png" width="32%"></img>
+<img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev3-esp8266-3v3.png" width="32%"></img> 
+
 **Rev2 boards**
 
 - Replace **R11** resistor with **4k7** resistor (instead of 10k)
