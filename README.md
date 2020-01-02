@@ -100,7 +100,7 @@ Keep the 24V power supply connected.
 
 ### Self test
 
-I've also prepared a self-test program that will test the hardware interface. Download selftest.ino and upload it to your Arduino board. Setup the shield:
+I've also prepared a self-test program that will test the hardware interface. Download [selftest.ino](https://github.com/jpraus/arduino-opentherm/blob/master/examples/selftest/selftest.ino) and upload it to your Arduino board. Setup the shield:
 
 1. Attach shield to Arduino
 2. Connect 24V power supply
