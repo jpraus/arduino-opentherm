@@ -78,6 +78,8 @@ Are you able to manufacture the PCB yourself? There are [Gerber files](gerber/) 
 
 It's not wise to plug the shield with your thermostat or boiler until you test it out. Follow the checks below to make sure your shield is properly assembled. For most of these checks, you will need at least a multimeter capable of measuring voltage, current, and resistance.
 
+The following test works only for 5V version of the board. 3.3V version (Wemos D1) lacks the 3.3V power supply so it does not pass the test without the Arduino board attached. So if you are looking for a 3.3V please build the 5V version first, test out and then update to 3.3V version.
+
 ### Power supply
 
 1. Check whether there is no short circuit between two pins on the 24V RED terminal. Use the continuity function of your multimeter.
