@@ -1,14 +1,20 @@
 // Wemos D1 R1
+#define THERMOSTAT_IN 16
+#define THERMOSTAT_OUT 4
+#define BOILER_IN 5
+#define BOILER_OUT 14
+
+// Wemos D1 R2
 //#define THERMOSTAT_IN 16
 //#define THERMOSTAT_OUT 4
 //#define BOILER_IN 5
-//#define BOILER_OUT 14
+//#define BOILER_OUT 0
 
 // Arduino UNO
-#define THERMOSTAT_IN 2
-#define THERMOSTAT_OUT 4
-#define BOILER_IN 3
-#define BOILER_OUT 5
+//#define THERMOSTAT_IN 2
+//#define THERMOSTAT_OUT 4
+//#define BOILER_IN 3
+//#define BOILER_OUT 5
 
 void setup() {
   pinMode(THERMOSTAT_IN, INPUT);
@@ -34,8 +40,23 @@ void setup() {
  * - Interconnect BLUE THERM and GREEN BOILER terminals with each other with 2 wires. Polarity does not matter at all.
  */
 void loop() {
-  Serial.println();
+/*
+  digitalWrite(BOILER_OUT, HIGH);
+  delay(10);
+  Serial.print("H => ");
+  Serial.println(digitalRead(THERMOSTAT_IN));
 
+  delay(1000);
+
+  digitalWrite(BOILER_OUT, LOW);
+  delay(10);
+  Serial.print("L => ");
+  Serial.println(digitalRead(THERMOSTAT_IN));
+  
+
+  delay(1000);
+  return;
+*/
   Serial.print("Boiler inbound, thermostat outbound .. ");
   digitalWrite(THERMOSTAT_OUT, HIGH);
   digitalWrite(BOILER_OUT, HIGH);
@@ -82,5 +103,5 @@ void loop() {
     Serial.println("Thermostat is high even if no signal is being sent");
   }
 
-  delay(5000);
+  delay(1000);
 }

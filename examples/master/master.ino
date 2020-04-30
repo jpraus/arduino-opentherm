@@ -4,6 +4,10 @@
 //#define BOILER_IN 5
 //#define BOILER_OUT 14
 
+// Wemos D1 R2
+//#define BOILER_IN 5
+//#define BOILER_OUT 0
+
 // Arduino UNO
 #define BOILER_IN 3
 #define BOILER_OUT 5

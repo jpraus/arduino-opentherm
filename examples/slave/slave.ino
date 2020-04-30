@@ -4,6 +4,10 @@
 //#define THERMOSTAT_IN 16
 //#define THERMOSTAT_OUT 4
 
+// Wemos D1 R2
+//#define THERMOSTAT_IN 16
+//#define THERMOSTAT_OUT 4
+
 // Arduino UNO
 #define THERMOSTAT_IN 2
 #define THERMOSTAT_OUT 4

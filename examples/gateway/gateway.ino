@@ -6,6 +6,12 @@
 //#define BOILER_IN 5
 //#define BOILER_OUT 14
 
+// Wemos D1 R2
+//#define THERMOSTAT_IN 16
+//#define THERMOSTAT_OUT 4
+//#define BOILER_IN 5
+//#define BOILER_OUT 0
+
 // Arduino UNO
 #define THERMOSTAT_IN 2
 #define THERMOSTAT_OUT 4
