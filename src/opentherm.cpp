@@ -104,14 +104,11 @@ void OPENTHERM::_timerISR() {
     if (value == 1) { // incoming data (rising signal)
       _read();
     }
-    else {
-      if (_timeoutCounter > 0) {
-        _timeoutCounter --;
-      }
-      if (_timeoutCounter == 0) {
-        _mode = MODE_ERROR_TOUT;
-        _stop();
-      }
+    if (_timeoutCounter > 0) {
+      _timeoutCounter --;
+    } else if (_timeoutCounter == 0) {
+      _mode = MODE_ERROR_TOUT;
+      _stop();
     }
   }
   else if (_mode == MODE_READ) {
