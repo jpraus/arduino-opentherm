@@ -100,18 +100,17 @@ void OPENTHERM::_read() {
 
 void OPENTHERM::_timerISR() {
   if (_mode == MODE_LISTEN) {
+    if (_timeoutCounter == 0) {
+      _mode = MODE_ERROR_TOUT;
+      _stop();
+      return;
+    }
     byte value = digitalRead(_pin);
     if (value == 1) { // incoming data (rising signal)
       _read();
     }
-    else {
-      if (_timeoutCounter > 0) {
-        _timeoutCounter --;
-      }
-      if (_timeoutCounter == 0) {
-        _mode = MODE_ERROR_TOUT;
-        _stop();
-      }
+    if (_timeoutCounter > 0) {
+      _timeoutCounter --;
     }
   }
   else if (_mode == MODE_READ) {
