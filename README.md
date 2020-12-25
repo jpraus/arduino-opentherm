@@ -4,7 +4,7 @@ Have you ever wondered when and why is your boiler running and heating your home
 
 [Connect Your Central Heating to Arduino](https://www.hackster.io/jiripraus/connect-your-central-heating-to-arduino-7818f5) - article describing the use of shield and library.
 
-This repo contains both Arduino library and hardware adapter.
+This repository contains both Arduino library and hardware adapter for **OpenTherm protocol 2.2** - see [specification](https://www.domoticaforum.eu/uploaded/Ard%20M/Opentherm%20Protocol%20v2-2.pdf).
 
 ![Arduino UNO OpenTherm shield](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/otshield.jpg)
 
@@ -31,7 +31,7 @@ The easiest way to get the hardware is to purchase a Arduino shield kit from my 
 - 5V 3A built-in power supply
 - Arduino UNO compatible shield
 
-![interface schmetics](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/shield-schema-doc.png)
+![interface schmetics](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/shield-schematic-doc_rev4.png)
 
 Based on [otgw.tclcode.com](http://otgw.tclcode.com) project.
 
@@ -78,14 +78,16 @@ Are you able to manufacture the PCB yourself? There are [Gerber files](gerber/) 
 
 It's not wise to plug the shield with your thermostat or boiler until you test it out. Follow the checks below to make sure your shield is properly assembled. For most of these checks, you will need at least a multimeter capable of measuring voltage, current, and resistance.
 
+The following test works only for 5V version of the board. 3.3V version (Wemos D1) lacks the 3.3V power supply so it does not pass the test without the Arduino board attached. So if you are looking for a 3.3V please build the 5V version first, test out and then update to 3.3V version.
+
 ### Power supply
 
-1. First, check whether there is no short circuit between two pins on the 24V RED terminal. Use the continuity function of your multimeter.
-2. Now connect the 24V power supply, keep in mind the polarity of the red connector. Connect the positive voltage wire to + pin (left) and ground wire to - pin (right). Red LED next to the RED terminal will now light up.
-3. Blue RxB LED will also light up, but don't mind it now. It's perfectly fine.
+1. Check whether there is no short circuit between two pins on the 24V RED terminal. Use the continuity function of your multimeter.
+2. Connect the 24V power supply, keep in mind the polarity of the red connector. Connect the positive voltage wire to + pin (left) and ground wire to - pin (right). Red LED next to the RED terminal will now light up.
+3. Blue RxT LED will also light up, but don't mind it now. It's perfectly fine.
 4. Check for 5V between +5V pin (fifth from the bottom on the right side) and ground pin (next one above +5V pin)
 
-### Thermostat interface
+### Interfaces
 
 Keep the 24V power supply connected.
 
@@ -93,10 +95,50 @@ Keep the 24V power supply connected.
 2. Next measure current on the same BLUE terminal. It should read a value between 5mA and 9mA. This means a low state of the line.
 3. If you connect MASTER-OUT pin (digital pin 4 / fifth pin from the top on the left side) to the any of the ground pins, the current on BLUE terminal should increase to a value between 17mA and 23mA. This is a high state of the transceiver line. Outbound thermostat communication is working. Disconnect the pin from the ground.
 4. Interconnect BLUE THERM and GREEN BOILER terminals with each other with 2 wires. Polarity does not matter at all. This will simulate a boiler for thermostat interface and thermostat for a boiler interface. Measure now voltage on GREEN terminal, it should read a value between 15V and 18V.
-5. If you re-connect MASTER-OUT pin to the ground again (same as in step 3 above), blue RxB LED should go off. Inbound boiler communication is working.  Disconnect the pin from the ground.
-6. If you connect SLAVE-OUT pin (digital pin 5 / sixth pin from the top on the left side) to +5V pin, the green RxT LED should light up. The voltage on the GREEN terminal should drop to a value between 5V and 7V. This verifies that both outbound boiler and inbound thermostat communication is working.
+5. If you re-connect MASTER-OUT pin to the ground again (same as in step 3 above), green RxB LED should light up. Inbound boiler communication is working.  Disconnect the pin from the ground.
+6. If you connect SLAVE-OUT pin (digital pin 5 / sixth pin from the top on the left side) to +5V pin, the blue RxT LED should go off. The voltage on the GREEN terminal should drop to a value between 5V and 7V. This verifies that both outbound boiler and inbound thermostat communication is working.
 7. Mount the shield on Arduino UNO (disconnected from the computer). It should power up.
 8. Well done! You are now ready to have some fun with the shield.
+
+### Self-test
+
+I've also prepared a self-test program that will test the hardware interface. Download [selftest.ino](https://github.com/jpraus/arduino-opentherm/blob/master/examples/selftest/selftest.ino) and upload it to your Arduino board. Setup the shield:
+
+1. Attach shield to Arduino
+2. Connect 24V power supply
+3. Interconnect BLUE THERM and GREEN BOILER terminals with each other with 2 wires.
+
+Self-test result should be:
+
+```
+OpenTherm gateway self-test
+
+Boiler inbound, thermostat outbound .. OK
+Boiler outbound, thermostat inbound .. OK
+```
+
+If it's not, do full hardware test above to identify the cause.
+
+### Compatibility with Wemos D1 (ESP8266)
+
+The shield and library code are compatible with a Wemos D1 development board which is using ESP8266 instead of AVR chips. However, ESP8266 is using 3.3V logic so to make the shield work, you need to alter it.
+
+**Rev3 boards**
+
+- Replace **R11** resistor with **4k7** resistor (instead of 10k)
+- Cut the 5V jumper on the back of the board
+- Solder the 3V3 jumper on the back of the board
+
+<img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev3-esp8266-R11.JPG" width="32%"></img>
+<img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev3-esp8266-3v3.JPG" width="32%"></img> 
+
+**Rev2 boards**
+
+- Replace **R11** resistor with **4k7** resistor (instead of 10k)
+- Cut the 5V trace on the back of the board
+- Wire up the optocoupler and the signal transistor to 3.3V with a short wire
+
+<img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev2-esp8266-R11.png" width="32%"></img> <img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev2-esp8266-trace.png" width="32%"></img> <img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev2-esp8266-3v3.png" width="32%"></img> 
 
 ## Working with library ##
 

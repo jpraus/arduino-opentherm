@@ -180,8 +180,12 @@ class OPENTHERM {
      */
     static void printToSerial(OpenthermData &data);
 
-    static void _risingSignalISR(); // this function needs to be public since its attached as interrupt handler
+#ifdef AVR
     static void _timerISR(); // this function needs to be public since its attached as interrupt handler
+#endif // END ESP8266
+#ifdef ESP8266
+    static void ICACHE_RAM_ATTR _timerISR(); // this function needs to be public since its attached as interrupt handler
+#endif // END ESP8266
 
   private:
     OPENTHERM() {}; // private constructor
@@ -195,9 +199,10 @@ class OPENTHERM {
     static volatile unsigned long _data;
     static volatile byte _bitPos;
     static volatile bool _active;
-    static volatile int _timeoutMs; // <0 no timeout
+    static volatile int _timeoutCounter; // <0 no timeout
 
-    static void _listen(); // attach rising interrupt
+    static void _listen(); // listen to incoming data packets
+    static void _read(); // data detected start reading
     static void _stop(); // stop timers and interrupts
     static void _startReadTimer(); // reading timer to sample at 1/5 of manchester code bit length (at 5kHz)
     static void _startWriteTimer(); // writing timer to send manchester code (at 2kHz)

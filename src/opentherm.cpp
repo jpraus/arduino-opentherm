@@ -22,14 +22,14 @@ volatile byte OPENTHERM::_clock = 0;
 volatile byte OPENTHERM::_bitPos = 0;
 volatile unsigned long OPENTHERM::_data = 0;
 volatile bool OPENTHERM::_active = false;
-volatile int OPENTHERM::_timeoutMs = -1;
+volatile int OPENTHERM::_timeoutCounter = -1;
 
 #define STOP_BIT_POS 33
 
 void OPENTHERM::listen(byte pin, int timeout, void (*callback)()) {
   _stop();
   _pin = pin;
-  _timeoutMs = timeout;
+  _timeoutCounter = timeout * 5; // timer ticks at 5 ticks/ms
   _callback = callback;
 
   _listen();
@@ -41,12 +41,8 @@ void OPENTHERM::_listen() {
   _active = true;
   _data = 0;
   _bitPos = 0;
-  noInterrupts();
-  attachInterrupt(digitalPinToInterrupt(_pin), OPENTHERM::_risingSignalISR, RISING);
-  interrupts();
-  if (_timeoutMs > 0) {
-    _startTimeoutTimer(); // tick every 1ms
-  }
+
+  _startReadTimer();
 }
 
 void OPENTHERM::send(byte pin, OpenthermData &data, void (*callback)()) {
@@ -88,14 +84,12 @@ void OPENTHERM::stop() {
 
 void OPENTHERM::_stop() {
   if (_active) {
-    detachInterrupt(digitalPinToInterrupt(_pin)); 
     _stopTimer();
     _active = false;
   }
 }
 
-void OPENTHERM::_risingSignalISR() {
-  detachInterrupt(digitalPinToInterrupt(_pin));
+void OPENTHERM::_read() {
   _data = 0;
   _bitPos = 0;
   _mode = MODE_READ;
@@ -106,12 +100,17 @@ void OPENTHERM::_risingSignalISR() {
 
 void OPENTHERM::_timerISR() {
   if (_mode == MODE_LISTEN) {
-    if (_timeoutMs > 0) {
-      _timeoutMs --;
-    }
-    if (_timeoutMs == 0) {
+    if (_timeoutCounter == 0) {
       _mode = MODE_ERROR_TOUT;
       _stop();
+      return;
+    }
+    byte value = digitalRead(_pin);
+    if (value == 1) { // incoming data (rising signal)
+      _read();
+    }
+    if (_timeoutCounter > 0) {
+      _timeoutCounter --;
     }
   }
   else if (_mode == MODE_READ) {
@@ -178,10 +177,6 @@ void OPENTHERM::_timerISR() {
   }
 }
 
-ISR(TIMER2_COMPA_vect) { // Timer2 interrupt
-  OPENTHERM::_timerISR();
-}
-
 void OPENTHERM::_bitRead(byte value) {
   _data = (_data << 1) | value;
   _bitPos ++;
@@ -233,6 +228,11 @@ void OPENTHERM::_callCallback() {
   }
 }
 
+#ifdef AVR
+ISR(TIMER2_COMPA_vect) { // Timer2 interrupt
+  OPENTHERM::_timerISR();
+}
+
 // 5 kHz timer
 void OPENTHERM::_startReadTimer() {
   cli();
@@ -280,6 +280,43 @@ void OPENTHERM::_stopTimer() {
   TIMSK2 = 0;
   sei();
 }
+#endif // END AVR
+
+#ifdef ESP8266
+// 5 kHz timer
+void OPENTHERM::_startReadTimer() {
+  noInterrupts();
+  timer1_attachInterrupt(OPENTHERM::_timerISR);
+  timer1_enable(TIM_DIV16, TIM_EDGE, TIM_LOOP); // 5MHz (5 ticks/us - 1677721.4 us max)
+  timer1_write(1000); // 5kHz
+  interrupts();
+}
+
+// 2 kHz timer
+void OPENTHERM::_startWriteTimer() {
+  noInterrupts();
+  timer1_attachInterrupt(OPENTHERM::_timerISR);
+  timer1_enable(TIM_DIV16, TIM_EDGE, TIM_LOOP); // 5MHz (5 ticks/us - 1677721.4 us max)
+  timer1_write(2500); // 2kHz
+  interrupts();
+}
+
+// 1 kHz timer
+void OPENTHERM::_startTimeoutTimer() {
+  noInterrupts();
+  timer1_attachInterrupt(OPENTHERM::_timerISR);
+  timer1_enable(TIM_DIV16, TIM_EDGE, TIM_LOOP); // 5MHz (5 ticks/us - 1677721.4 us max)
+  timer1_write(5000); // 1kHz
+  interrupts();
+}
+
+void OPENTHERM::_stopTimer() {
+  noInterrupts();
+  timer1_disable();
+  timer1_detachInterrupt();
+  interrupts();
+}
+#endif // END ESP8266
 
 // https://stackoverflow.com/questions/21617970/how-to-check-if-value-has-even-parity-of-bits-or-odd
 bool OPENTHERM::_checkParity(unsigned long val) {
@@ -330,9 +367,16 @@ float OpenthermData::f88() {
 }
 
 void OpenthermData::f88(float value) {
-  valueHB = (byte) value;
-  float fraction = (value - valueHB);
-  valueLB = fraction * 256.0;
+  if (value >= 0) {
+    valueHB = (byte) value;
+    float fraction = (value - valueHB);
+    valueLB = fraction * 256.0;
+  }
+  else {
+    valueHB = (byte)(value - 1);
+    float fraction = (value - valueHB - 1);
+    valueLB = fraction * 256.0;
+  }
 }
 
 uint16_t OpenthermData::u16() {

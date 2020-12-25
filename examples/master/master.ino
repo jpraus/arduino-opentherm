@@ -1,5 +1,14 @@
 #include <opentherm.h>
 
+// Wemos D1 R1
+//#define BOILER_IN 5
+//#define BOILER_OUT 14
+
+// Wemos D1 R2
+//#define BOILER_IN 5
+//#define BOILER_OUT 0
+
+// Arduino UNO
 #define BOILER_IN 3
 #define BOILER_OUT 5
 
@@ -7,10 +16,11 @@ OpenthermData message;
 
 void setup() {
   pinMode(BOILER_IN, INPUT);
+  digitalWrite(BOILER_IN, HIGH); // pull up
   digitalWrite(BOILER_OUT, HIGH);
   pinMode(BOILER_OUT, OUTPUT); // low output = high voltage, high output = low voltage
 
-  Serial.begin(19200);
+  Serial.begin(115200);
 }
 
 /**
