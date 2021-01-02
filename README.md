@@ -53,15 +53,16 @@ Are you able to manufacture the PCB yourself? There are [Gerber files](gerber/) 
 - LED2 green 0805 LED
 - LED3 red 0805 LED
 - Q1,Q2,Q3,Q5 BC858B SOT-23
-- Q4 BC848C SOT-23
+- Q4,Q6 BC848C SOT-23
 - R1,R4 330 0805
 - R2 220 0805
 - R3,R7 100 0805
 - R5,R11 10k 0805
-- R6,R8 33k 0805
+- R8 20k 0805
+- R6 33k 0805
 - R9 39 0805
 - R10 4k7 0805
-- R12,R13,R14 1k 0805
+- R12,R13,R14,R15 1k 0805
 - U1 LM2596SX-5.0
 - U2,U3 PC817B 
 
