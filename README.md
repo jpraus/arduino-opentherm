@@ -128,7 +128,8 @@ The shield and library code are compatible with a Wemos D1 development board whi
 
 - Use **Logic Voltage** jumper and switch Voltage to 3.3V (left side)
 
-
+<img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev4.JPG" width="32%"></img>
+<img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev4-logic-jumper.JPG" width="32%"></img> 
 
 **Rev3 boards**
 
