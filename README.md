@@ -123,6 +123,12 @@ If it's not, do full hardware test above to identify the cause.
 
 The shield and library code are compatible with a Wemos D1 development board which is using ESP8266 instead of AVR chips. However, ESP8266 is using 3.3V logic so to make the shield work, you need to alter it.
 
+**Rev4 boards**
+
+- Use **Logic Voltage** jumper and switch Voltage to 3.3V (left side)
+
+
+
 **Rev3 boards**
 
 - Replace **R11** resistor with **4k7** resistor (instead of 10k)
