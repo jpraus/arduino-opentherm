@@ -31,7 +31,7 @@ The easiest way to get the hardware is to purchase a Arduino shield kit from my 
 - 5V 3A built-in power supply
 - Arduino UNO compatible shield
 
-![interface schmetics](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/shield-schematic-doc_rev4.png)
+![interface schmetics](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/shield-schematic_rev4.png)
 
 Based on [otgw.tclcode.com](http://otgw.tclcode.com) project.
 
