@@ -336,6 +336,50 @@ void OPENTHERM::_stopTimer() {
 }
 #endif // END AVR arduino Leonardo
 
+#if defined(__AVR_ATmega4809__) // Arduino Uno Wifi Rev2, Arduino Nano Every
+// timer interrupt
+ISR(TCB0_INT_vect) {
+  OPENTHERM::_timerISR();
+  TCB0.INTFLAGS = TCB_CAPT_bm; // clear interrupt flag
+}
+
+// 5 kHz timer
+void OPENTHERM::_startReadTimer() {
+  cli();
+  TCB0.CTRLB = TCB_CNTMODE_INT_gc; // use timer compare mode
+  TCB0.CCMP = 3199; // value to compare with (16*10^6) / 5000 - 1
+  TCB0.INTCTRL = TCB_CAPT_bm; // enable the interrupt
+  TCB0.CTRLA = TCB_CLKSEL_CLKDIV1_gc | TCB_ENABLE_bm; // use Timer A as clock, enable timer
+  sei();
+}
+
+// 2 kHz timer
+void OPENTHERM::_startWriteTimer() {
+  cli();
+  TCB0.CTRLB = TCB_CNTMODE_INT_gc; // use timer compare mode
+  TCB0.CCMP = 7999; // value to compare with (16*10^6) / 2000 - 1
+  TCB0.INTCTRL = TCB_CAPT_bm; // enable the interrupt
+  TCB0.CTRLA = TCB_CLKSEL_CLKDIV1_gc | TCB_ENABLE_bm; // use Timer A as clock, enable timer
+  sei();
+}
+
+// 1 kHz timer
+void OPENTHERM::_startTimeoutTimer() {
+  cli();
+  TCB0.CTRLB = TCB_CNTMODE_INT_gc; // use timer compare mode
+  TCB0.CCMP = 15999; // value to compare with (16*10^6) / 1000 - 1
+  TCB0.INTCTRL = TCB_CAPT_bm; // enable the interrupt
+  TCB0.CTRLA = TCB_CLKSEL_CLKDIV1_gc | TCB_ENABLE_bm; // use Timer A as clock, enable timer
+  sei();
+}
+
+void OPENTHERM::_stopTimer() {
+  cli();
+  TCB0.CTRLA = 0;
+  sei();
+}
+#endif // END ATMega4809 Arduino Uno Wifi Rev2, Arduino Nano Every
+
 #ifdef ESP8266
 // 5 kHz timer
 void OPENTHERM::_startReadTimer() {
