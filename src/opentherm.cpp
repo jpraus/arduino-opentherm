@@ -282,6 +282,60 @@ void OPENTHERM::_stopTimer() {
 }
 #endif // END AVR arduino Uno
 
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega16U4__) // Arduino Leonardo
+ISR(TIMER3_COMPA_vect) { // Timer3 interrupt
+  OPENTHERM::_timerISR();
+}
+
+// 5 kHz timer
+void OPENTHERM::_startReadTimer() {
+  cli();
+  TCCR3A = 0; // set entire TCCR3A register to 0
+  TCCR3B = 0; // same for TCCR3B
+  TCNT3  = 0; //initialize counter value to 0
+  // set compare match register for 4kHz increments (1/4 of bit period)
+  OCR3A = 3199; // = (16*10^6) / (5000*1) - 1 (must be <65536)
+  TCCR3B |= (1 << WGM32);  // turn on CTC mode
+  TCCR3B |= (1 << CS30);   // No prescaling
+  TIMSK3 |= (1 << OCIE3A); // enable timer compare interrupt
+  sei();
+}
+
+// 2 kHz timer
+void OPENTHERM::_startWriteTimer() {
+  cli();
+  TCCR3A = 0; // set entire TCCR3A register to 0
+  TCCR3B = 0; // same for TCCR3B
+  TCNT3  = 0; //initialize counter value to 0
+  // set compare match register for 2080Hz increments (2kHz to do transition in the middle of the bit)
+  OCR3A = 7691;// = (16*10^6) / (2080*1) - 1 (must be <65536)
+  TCCR3B |= (1 << WGM32); // turn on CTC mode
+  TCCR3B |= (1 << CS30);   // No prescaling
+  TIMSK3 |= (1 << OCIE3A); // enable timer compare interrupt
+  sei();
+}
+
+// 1 kHz timer
+void OPENTHERM::_startTimeoutTimer() {
+  cli();
+  TCCR3A = 0; // set entire TCCR3A register to 0
+  TCCR3B = 0; // same for TCCR3B
+  TCNT3  = 0; //initialize counter value to 0
+  // set compare match register for 1kHz increments
+  OCR3A = 15999; // = (16*10^6) / (1000*1) - 1 (must be <65536)
+  TCCR3B |= (1 << WGM32); // turn on CTC mode
+  TCCR3B |= (1 << CS30);   // No prescaling
+  TIMSK3 |= (1 << OCIE3A); // enable timer compare interrupt
+  sei();
+}
+
+void OPENTHERM::_stopTimer() {
+  cli();
+  TIMSK3 = 0;
+  sei();
+}
+#endif // END AVR arduino Leonardo
+
 #if defined(__AVR_ATmega4809__) // Arduino Uno Wifi Rev2, Arduino Nano Every
 // timer interrupt
 ISR(TCB0_INT_vect) {
