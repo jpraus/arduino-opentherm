@@ -416,6 +416,75 @@ void OPENTHERM::_stopTimer() {
 }
 #endif // END ESP8266
 
+#ifdef SAM
+void TC4_Handler() {
+  // Check for overflow (OVF) interrupt
+  if (TC4->COUNT16.INTFLAG.bit.OVF && TC4->COUNT16.INTENSET.bit.OVF) {
+    OPENTHERM::_timerISR();
+    REG_TC4_INTFLAG = TC_INTFLAG_OVF; // Clear the OVF interrupt flag
+  }
+}
+
+void OPENTHERM::_setTimer(uint16_t cc0) {
+  noInterrupts();
+  // Set up the generic clock (GCLK4) used to clock timers
+  REG_GCLK_GENDIV = GCLK_GENDIV_DIV(1) | // Divide the 48MHz clock source by divisor 1: 48MHz/1=48MHz
+                    GCLK_GENDIV_ID(4);   // Select Generic Clock (GCLK) 4
+  while (GCLK->STATUS.bit.SYNCBUSY)
+    ; // Wait for synchronization
+
+  REG_GCLK_GENCTRL = GCLK_GENCTRL_IDC |         // Set the duty cycle to 50/50 HIGH/LOW
+                     GCLK_GENCTRL_GENEN |       // Enable GCLK4
+                     GCLK_GENCTRL_SRC_DFLL48M | // Set the 48MHz clock source
+                     GCLK_GENCTRL_ID(4);        // Select GCLK4
+  while (GCLK->STATUS.bit.SYNCBUSY)
+    ; // Wait for synchronization
+
+  // Feed GCLK4 to TC4 and TC5
+  REG_GCLK_CLKCTRL = GCLK_CLKCTRL_CLKEN |     // Enable GCLK4 to TC4 and TC5
+                     GCLK_CLKCTRL_GEN_GCLK4 | // Select GCLK4
+                     GCLK_CLKCTRL_ID_TC4_TC5; // Feed the GCLK4 to TC4 and TC5
+  while (GCLK->STATUS.bit.SYNCBUSY)
+    ; // Wait for synchronization
+
+  REG_TC4_COUNT16_CC0 = cc0; // Set the TC4 CC0 register as the TOP value in match frequency mode
+  while (TC4->COUNT16.STATUS.bit.SYNCBUSY)
+    ; // Wait for synchronization
+
+  NVIC_SetPriority(TC4_IRQn, 0); // Set the Nested Vector Interrupt Controller (NVIC) priority for TC4 to 0 (highest)
+  NVIC_EnableIRQ(TC4_IRQn);      // Connect TC4 to Nested Vector Interrupt Controller (NVIC)
+
+  REG_TC4_INTFLAG |= TC_INTFLAG_OVF;  // Clear the interrupt flags
+  REG_TC4_INTENSET = TC_INTENSET_OVF; // Enable TC4 interrupts
+
+  REG_TC4_CTRLA |= TC_CTRLA_PRESCALER_DIV1 | // Set prescaler to 1024, 48MHz/1024 = 46.875kHz
+                   TC_CTRLA_WAVEGEN_MFRQ |   // Put the timer TC4 into match frequency (MFRQ) mode
+                   TC_CTRLA_ENABLE;          // Enable TC4
+  while (TC4->COUNT16.STATUS.bit.SYNCBUSY)
+    ; // Wait for synchronization
+  interrupts();
+}
+
+// 5 kHz timer
+void OPENTHERM::_startReadTimer() {
+  OPENTHERM::_setTimer(9559);
+}
+
+// 2 kHz timer
+void OPENTHERM::_startWriteTimer() {
+  OPENTHERM::_setTimer(23999);
+}
+
+// 1 kHz timer
+void OPENTHERM::_startTimeoutTimer() {
+  OPENTHERM::_setTimer(47999);
+}
+
+void OPENTHERM::_stopTimer() {
+  REG_TC4_INTENCLR = TC_INTENCLR_OVF; // Disable TC4 interrupts
+}
+#endif
+
 // https://stackoverflow.com/questions/21617970/how-to-check-if-value-has-even-parity-of-bits-or-odd
 bool OPENTHERM::_checkParity(unsigned long val) {
   val ^= val >> 16;
@@ -428,35 +497,35 @@ bool OPENTHERM::_checkParity(unsigned long val) {
 
 void OPENTHERM::printToSerial(OpenthermData &data) {
   if (data.type == OT_MSGTYPE_READ_DATA) {
-    Serial.print("ReadData");
+    OT_DEBUG_SERIAL.print("ReadData");
   }
   else if (data.type == OT_MSGTYPE_READ_ACK) {
-    Serial.print("ReadAck");
+    OT_DEBUG_SERIAL.print("ReadAck");
   }
   else if (data.type == OT_MSGTYPE_WRITE_DATA) {
-    Serial.print("WriteData");
+    OT_DEBUG_SERIAL.print("WriteData");
   }
   else if (data.type == OT_MSGTYPE_WRITE_ACK) {
-    Serial.print("WriteAck");
+    OT_DEBUG_SERIAL.print("WriteAck");
   }
   else if (data.type == OT_MSGTYPE_INVALID_DATA) {
-    Serial.print("InvalidData");
+    OT_DEBUG_SERIAL.print("InvalidData");
   }
   else if (data.type == OT_MSGTYPE_DATA_INVALID) {
-    Serial.print("DataInvalid");
+    OT_DEBUG_SERIAL.print("DataInvalid");
   }
   else if (data.type == OT_MSGTYPE_UNKNOWN_DATAID) {
-    Serial.print("UnknownId");
+    OT_DEBUG_SERIAL.print("UnknownId");
   }
   else {
-    Serial.print(data.type, BIN);
+    OT_DEBUG_SERIAL.print(data.type, BIN);
   }
-  Serial.print(" ");
-  Serial.print(data.id);
-  Serial.print(" ");
-  Serial.print(data.valueHB, HEX);
-  Serial.print(" ");
-  Serial.print(data.valueLB, HEX);
+  OT_DEBUG_SERIAL.print(" ");
+  OT_DEBUG_SERIAL.print(data.id);
+  OT_DEBUG_SERIAL.print(" ");
+  OT_DEBUG_SERIAL.print(data.valueHB, HEX);
+  OT_DEBUG_SERIAL.print(" ");
+  OT_DEBUG_SERIAL.print(data.valueLB, HEX);
 }
 
 float OpenthermData::f88() {
