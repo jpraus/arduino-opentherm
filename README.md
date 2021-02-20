@@ -148,6 +148,10 @@ The shield and library code are compatible with a Wemos D1 development board whi
 
 <img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev2-esp8266-R11.png" width="32%"></img> <img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev2-esp8266-trace.png" width="32%"></img> <img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev2-esp8266-3v3.png" width="32%"></img> 
 
+### Compatibility with SAMD21 based boards (Arduino Zero/Sodaq Sara)
+
+As well as the ESP8266, SAMD21 based board use 3.3V logic. The same prodedure can be followed as for the ESP8266. However an extra voltage divider is needed because the low voltage is not low enough for the SAMD21 chip to be recognized as low. Add a voltage divider of two 4k7 resistors on MASTER-IN to ground and measure the divided voltage on another pin.
+
 ## Working with library ##
 
 Library contains 3 examples to test out your setup. These examples are configured to use pins defined above, but library will allow you to change pins to your custom ones.
