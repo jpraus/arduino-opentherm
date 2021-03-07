@@ -208,6 +208,9 @@ class OPENTHERM {
 #ifdef ESP8266
     static void ICACHE_RAM_ATTR _timerISR(); // this function needs to be public since its attached as interrupt handler
 #endif // END ESP8266
+#ifdef ESP32
+    static void IRAM_ATTR _timerISR(); // this function needs to be public since its attached as interrupt handler
+#endif // END ESP32
 
   private:
     OPENTHERM() {}; // private constructor
