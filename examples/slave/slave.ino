@@ -12,6 +12,10 @@
 #define THERMOSTAT_IN 2
 #define THERMOSTAT_OUT 4
 
+// Wemos D1 R32
+// #define THERMOSTAT_IN 26
+// #define THERMOSTAT_OUT 17
+
 OpenthermData message;
 
 void setup() {

@@ -416,6 +416,55 @@ void OPENTHERM::_stopTimer() {
 }
 #endif // END ESP8266
 
+#ifdef ESP32
+
+static hw_timer_t * timer = NULL;
+
+static void initTimer() {
+  if (timer == NULL) {
+    timer = timerBegin(0, 80, true);
+  }
+}
+
+// 5 kHz timer
+void OPENTHERM::_startReadTimer() {
+  noInterrupts();
+  initTimer();
+  timerAttachInterrupt(timer, OPENTHERM::_timerISR, true);
+  timerAlarmWrite(timer, 200, true);
+  timerAlarmEnable(timer);
+  interrupts();
+}
+
+// 2 kHz timer
+void OPENTHERM::_startWriteTimer() {
+  noInterrupts();
+  initTimer();
+  timerAttachInterrupt(timer, OPENTHERM::_timerISR, true);
+  timerAlarmWrite(timer, 500, true);
+  timerAlarmEnable(timer);
+  interrupts();
+}
+
+// 1 kHz timer
+void OPENTHERM::_startTimeoutTimer() {
+  noInterrupts();
+  initTimer();
+  timerAttachInterrupt(timer, OPENTHERM::_timerISR, true);
+  timerAlarmWrite(timer, 1000, true);
+  timerAlarmEnable(timer);
+  interrupts();
+}
+
+void OPENTHERM::_stopTimer() {
+  noInterrupts();
+  initTimer();
+  timerAlarmDisable(timer);
+  timerDetachInterrupt(timer);
+  interrupts();
+}
+#endif  // END ESP32
+
 // https://stackoverflow.com/questions/21617970/how-to-check-if-value-has-even-parity-of-bits-or-odd
 bool OPENTHERM::_checkParity(unsigned long val) {
   val ^= val >> 16;

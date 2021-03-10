@@ -18,6 +18,12 @@
 #define BOILER_IN 3
 #define BOILER_OUT 5
 
+// Wemos D1 R32
+// #define THERMOSTAT_IN 26
+// #define THERMOSTAT_OUT 17
+// #define BOILER_IN 25
+// #define BOILER_OUT 16
+
 OpenthermData message;
 
 void setup() {
