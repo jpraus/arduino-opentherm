@@ -228,7 +228,7 @@ void OPENTHERM::_callCallback() {
   }
 }
 
-#ifdef AVR
+#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__) // Arduino Uno
 ISR(TIMER2_COMPA_vect) { // Timer2 interrupt
   OPENTHERM::_timerISR();
 }
@@ -280,7 +280,105 @@ void OPENTHERM::_stopTimer() {
   TIMSK2 = 0;
   sei();
 }
-#endif // END AVR
+#endif // END AVR arduino Uno
+
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega16U4__) // Arduino Leonardo
+ISR(TIMER3_COMPA_vect) { // Timer3 interrupt
+  OPENTHERM::_timerISR();
+}
+
+// 5 kHz timer
+void OPENTHERM::_startReadTimer() {
+  cli();
+  TCCR3A = 0; // set entire TCCR3A register to 0
+  TCCR3B = 0; // same for TCCR3B
+  TCNT3  = 0; //initialize counter value to 0
+  // set compare match register for 4kHz increments (1/4 of bit period)
+  OCR3A = 3199; // = (16*10^6) / (5000*1) - 1 (must be <65536)
+  TCCR3B |= (1 << WGM32);  // turn on CTC mode
+  TCCR3B |= (1 << CS30);   // No prescaling
+  TIMSK3 |= (1 << OCIE3A); // enable timer compare interrupt
+  sei();
+}
+
+// 2 kHz timer
+void OPENTHERM::_startWriteTimer() {
+  cli();
+  TCCR3A = 0; // set entire TCCR3A register to 0
+  TCCR3B = 0; // same for TCCR3B
+  TCNT3  = 0; //initialize counter value to 0
+  // set compare match register for 2080Hz increments (2kHz to do transition in the middle of the bit)
+  OCR3A = 7691;// = (16*10^6) / (2080*1) - 1 (must be <65536)
+  TCCR3B |= (1 << WGM32); // turn on CTC mode
+  TCCR3B |= (1 << CS30);   // No prescaling
+  TIMSK3 |= (1 << OCIE3A); // enable timer compare interrupt
+  sei();
+}
+
+// 1 kHz timer
+void OPENTHERM::_startTimeoutTimer() {
+  cli();
+  TCCR3A = 0; // set entire TCCR3A register to 0
+  TCCR3B = 0; // same for TCCR3B
+  TCNT3  = 0; //initialize counter value to 0
+  // set compare match register for 1kHz increments
+  OCR3A = 15999; // = (16*10^6) / (1000*1) - 1 (must be <65536)
+  TCCR3B |= (1 << WGM32); // turn on CTC mode
+  TCCR3B |= (1 << CS30);   // No prescaling
+  TIMSK3 |= (1 << OCIE3A); // enable timer compare interrupt
+  sei();
+}
+
+void OPENTHERM::_stopTimer() {
+  cli();
+  TIMSK3 = 0;
+  sei();
+}
+#endif // END AVR arduino Leonardo
+
+#if defined(__AVR_ATmega4809__) // Arduino Uno Wifi Rev2, Arduino Nano Every
+// timer interrupt
+ISR(TCB0_INT_vect) {
+  OPENTHERM::_timerISR();
+  TCB0.INTFLAGS = TCB_CAPT_bm; // clear interrupt flag
+}
+
+// 5 kHz timer
+void OPENTHERM::_startReadTimer() {
+  cli();
+  TCB0.CTRLB = TCB_CNTMODE_INT_gc; // use timer compare mode
+  TCB0.CCMP = 3199; // value to compare with (16*10^6) / 5000 - 1
+  TCB0.INTCTRL = TCB_CAPT_bm; // enable the interrupt
+  TCB0.CTRLA = TCB_CLKSEL_CLKDIV1_gc | TCB_ENABLE_bm; // use Timer A as clock, enable timer
+  sei();
+}
+
+// 2 kHz timer
+void OPENTHERM::_startWriteTimer() {
+  cli();
+  TCB0.CTRLB = TCB_CNTMODE_INT_gc; // use timer compare mode
+  TCB0.CCMP = 7999; // value to compare with (16*10^6) / 2000 - 1
+  TCB0.INTCTRL = TCB_CAPT_bm; // enable the interrupt
+  TCB0.CTRLA = TCB_CLKSEL_CLKDIV1_gc | TCB_ENABLE_bm; // use Timer A as clock, enable timer
+  sei();
+}
+
+// 1 kHz timer
+void OPENTHERM::_startTimeoutTimer() {
+  cli();
+  TCB0.CTRLB = TCB_CNTMODE_INT_gc; // use timer compare mode
+  TCB0.CCMP = 15999; // value to compare with (16*10^6) / 1000 - 1
+  TCB0.INTCTRL = TCB_CAPT_bm; // enable the interrupt
+  TCB0.CTRLA = TCB_CLKSEL_CLKDIV1_gc | TCB_ENABLE_bm; // use Timer A as clock, enable timer
+  sei();
+}
+
+void OPENTHERM::_stopTimer() {
+  cli();
+  TCB0.CTRLA = 0;
+  sei();
+}
+#endif // END ATMega4809 Arduino Uno Wifi Rev2, Arduino Nano Every
 
 #ifdef ESP8266
 // 5 kHz timer
@@ -317,6 +415,55 @@ void OPENTHERM::_stopTimer() {
   interrupts();
 }
 #endif // END ESP8266
+
+#ifdef ESP32
+
+static hw_timer_t * timer = NULL;
+
+static void initTimer() {
+  if (timer == NULL) {
+    timer = timerBegin(0, 80, true);
+  }
+}
+
+// 5 kHz timer
+void OPENTHERM::_startReadTimer() {
+  noInterrupts();
+  initTimer();
+  timerAttachInterrupt(timer, OPENTHERM::_timerISR, true);
+  timerAlarmWrite(timer, 200, true);
+  timerAlarmEnable(timer);
+  interrupts();
+}
+
+// 2 kHz timer
+void OPENTHERM::_startWriteTimer() {
+  noInterrupts();
+  initTimer();
+  timerAttachInterrupt(timer, OPENTHERM::_timerISR, true);
+  timerAlarmWrite(timer, 500, true);
+  timerAlarmEnable(timer);
+  interrupts();
+}
+
+// 1 kHz timer
+void OPENTHERM::_startTimeoutTimer() {
+  noInterrupts();
+  initTimer();
+  timerAttachInterrupt(timer, OPENTHERM::_timerISR, true);
+  timerAlarmWrite(timer, 1000, true);
+  timerAlarmEnable(timer);
+  interrupts();
+}
+
+void OPENTHERM::_stopTimer() {
+  noInterrupts();
+  initTimer();
+  timerAlarmDisable(timer);
+  timerDetachInterrupt(timer);
+  interrupts();
+}
+#endif  // END ESP32
 
 // https://stackoverflow.com/questions/21617970/how-to-check-if-value-has-even-parity-of-bits-or-odd
 bool OPENTHERM::_checkParity(unsigned long val) {
