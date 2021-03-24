@@ -33,7 +33,7 @@ void setup() {
  */
 void loop() {
   if (OPENTHERM::getMessage(message)) {
-    Serial.print("-> ");
+    Serial.print(F("-> "));
     OPENTHERM::printToSerial(message);
     Serial.println();
     delay(100); // Opentherm defines delay between request and response
@@ -48,7 +48,7 @@ void loop() {
 }
 
 void listenAfterResponse() {
-  Serial.print("<- ");
+  Serial.print(F("<- "));
   OPENTHERM::printToSerial(message);
   Serial.println();
   Serial.println();

@@ -37,7 +37,7 @@ void loop() {
     message.id = OT_MSGID_SLAVE_CONFIG;
     message.valueHB = 0;
     message.valueLB = 0;
-    Serial.print("-> "); 
+    Serial.print(F("-> ")); 
     OPENTHERM::printToSerial(message); 
     Serial.println();
     OPENTHERM::send(BOILER_OUT, message); // send message to boiler
@@ -47,7 +47,7 @@ void loop() {
   }
   else if (OPENTHERM::getMessage(message)) { // boiler responded
     OPENTHERM::stop();
-    Serial.print("<- ");
+    Serial.print(F("<- "));
     OPENTHERM::printToSerial(message);
     Serial.println();
     Serial.println();
@@ -55,7 +55,7 @@ void loop() {
   }
   else if (OPENTHERM::isError()) {
     OPENTHERM::stop();
-    Serial.println("<- Timeout");
+    Serial.println(F("<- Timeout"));
     Serial.println();
   }
 }
