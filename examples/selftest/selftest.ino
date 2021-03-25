@@ -29,7 +29,7 @@ void setup() {
   Serial.begin(115200);
   delay(1000);
 
-  Serial.println("OpenTherm gateway self-test");
+  Serial.println(F("OpenTherm gateway self-test"));
 }
 
 /**
@@ -43,21 +43,21 @@ void loop() {
 /*
   digitalWrite(BOILER_OUT, HIGH);
   delay(10);
-  Serial.print("H => ");
+  Serial.print(F("H => "));
   Serial.println(digitalRead(THERMOSTAT_IN));
 
   delay(1000);
 
   digitalWrite(BOILER_OUT, LOW);
   delay(10);
-  Serial.print("L => ");
+  Serial.print(F("L => "));
   Serial.println(digitalRead(THERMOSTAT_IN));
   
 
   delay(1000);
   return;
 */
-  Serial.print("Boiler inbound, thermostat outbound .. ");
+  Serial.print(F("Boiler inbound, thermostat outbound .. "));
   digitalWrite(THERMOSTAT_OUT, HIGH);
   digitalWrite(BOILER_OUT, HIGH);
   delay(10);
@@ -68,19 +68,19 @@ void loop() {
     delay(10);
 
     if (digitalRead(THERMOSTAT_IN) == 0 && digitalRead(BOILER_IN) == 1) { // ok
-      Serial.println("OK");
+      Serial.println(F("OK"));
     }
     else {
-      Serial.println("Failed");
-      Serial.println("Boiler is not registering signal or thermostat is not sending properly");
+      Serial.println(F("Failed"));
+      Serial.println(F("Boiler is not registering signal or thermostat is not sending properly"));
     }
   }
   else {
-    Serial.println("Failed");
-    Serial.println("Boiler is high even if no signal is being sent");
+    Serial.println(F("Failed"));
+    Serial.println(F("Boiler is high even if no signal is being sent"));
   }
   
-  Serial.print("Boiler outbound, thermostat inbound .. ");
+  Serial.print(F("Boiler outbound, thermostat inbound .. "));
   digitalWrite(THERMOSTAT_OUT, HIGH);
   digitalWrite(BOILER_OUT, HIGH);
   delay(10);
@@ -91,16 +91,16 @@ void loop() {
     delay(10);
 
     if (digitalRead(THERMOSTAT_IN) == 1 && digitalRead(BOILER_IN) == 0) { // ok
-      Serial.println("OK");
+      Serial.println(F("OK"));
     }
     else {
-      Serial.println("Failed");
-      Serial.println("Thermostat is not registering signal or boiler is not sending properly");
+      Serial.println(F("Failed"));
+      Serial.println(F("Thermostat is not registering signal or boiler is not sending properly"));
     }
   }
   else {
-    Serial.println("Failed");
-    Serial.println("Thermostat is high even if no signal is being sent");
+    Serial.println(F("Failed"));
+    Serial.println(F("Thermostat is high even if no signal is being sent"));
   }
 
   delay(1000);

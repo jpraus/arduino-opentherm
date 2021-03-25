@@ -477,34 +477,34 @@ bool OPENTHERM::_checkParity(unsigned long val) {
 
 void OPENTHERM::printToSerial(OpenthermData &data) {
   if (data.type == OT_MSGTYPE_READ_DATA) {
-    Serial.print("ReadData");
+    Serial.print(F("ReadData"));
   }
   else if (data.type == OT_MSGTYPE_READ_ACK) {
-    Serial.print("ReadAck");
+    Serial.print(F("ReadAck"));
   }
   else if (data.type == OT_MSGTYPE_WRITE_DATA) {
-    Serial.print("WriteData");
+    Serial.print(F("WriteData"));
   }
   else if (data.type == OT_MSGTYPE_WRITE_ACK) {
-    Serial.print("WriteAck");
+    Serial.print(F("WriteAck"));
   }
   else if (data.type == OT_MSGTYPE_INVALID_DATA) {
-    Serial.print("InvalidData");
+    Serial.print(F("InvalidData"));
   }
   else if (data.type == OT_MSGTYPE_DATA_INVALID) {
-    Serial.print("DataInvalid");
+    Serial.print(F("DataInvalid"));
   }
   else if (data.type == OT_MSGTYPE_UNKNOWN_DATAID) {
-    Serial.print("UnknownId");
+    Serial.print(F("UnknownId"));
   }
   else {
     Serial.print(data.type, BIN);
   }
-  Serial.print(" ");
+  Serial.print(F(" "));
   Serial.print(data.id);
-  Serial.print(" ");
+  Serial.print(F(" "));
   Serial.print(data.valueHB, HEX);
-  Serial.print(" ");
+  Serial.print(F(" "));
   Serial.print(data.valueLB, HEX);
 }
 
