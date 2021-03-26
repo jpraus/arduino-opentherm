@@ -128,7 +128,7 @@ struct OpenthermData {
 class OPENTHERM {
   public:
     /**
-     * Start listening foro Opentherm data packet comming from line connected to given pin. 
+     * Start listening for Opentherm data packet comming from line connected to given pin. 
      * If data packet is received then hasMessage() function returns true and data packet can be retrieved by calling getMessage() function.
      * If timeout > 0 then this function waits for incomming data package for timeout millis and if no data packet is recevived, error state is indicated by isError() function.
      * If either data packet is received or timeout is reached listening is stopped.
