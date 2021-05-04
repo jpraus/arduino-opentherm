@@ -18,6 +18,12 @@
 #define BOILER_IN 3
 #define BOILER_OUT 5
 
+// Wemos D1 R32
+// #define THERMOSTAT_IN 26
+// #define THERMOSTAT_OUT 17
+// #define BOILER_IN 25
+// #define BOILER_OUT 16
+
 OpenthermData message;
 
 void setup() {
@@ -49,7 +55,7 @@ void loop() {
       OPENTHERM::listen(THERMOSTAT_IN);
     }
     else if (OPENTHERM::getMessage(message)) {
-      Serial.print("-> ");
+      Serial.print(F("-> "));
       OPENTHERM::printToSerial(message);
       Serial.println();
       OPENTHERM::send(BOILER_OUT, message); // forward message to boiler
@@ -61,7 +67,7 @@ void loop() {
       OPENTHERM::listen(BOILER_IN, 800); // response need to be send back by boiler within 800ms
     }
     else if (OPENTHERM::getMessage(message)) {
-      Serial.print("<- ");
+      Serial.print(F("<- "));
       OPENTHERM::printToSerial(message);
       Serial.println();
       Serial.println();
@@ -70,7 +76,7 @@ void loop() {
     }
     else if (OPENTHERM::isError()) {
       mode = MODE_LISTEN_MASTER;
-      Serial.println("<- Timeout");
+      Serial.println(F("<- Timeout"));
       Serial.println();
     }
   }

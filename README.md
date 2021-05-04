@@ -31,7 +31,7 @@ The easiest way to get the hardware is to purchase a Arduino shield kit from my 
 - 5V 3A built-in power supply
 - Arduino UNO compatible shield
 
-![interface schmetics](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/shield-schematic-doc_rev4.png)
+![interface schmetics](https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/shield-schematic_rev4.png)
 
 Based on [otgw.tclcode.com](http://otgw.tclcode.com) project.
 
@@ -53,15 +53,16 @@ Are you able to manufacture the PCB yourself? There are [Gerber files](gerber/) 
 - LED2 green 0805 LED
 - LED3 red 0805 LED
 - Q1,Q2,Q3,Q5 BC858B SOT-23
-- Q4 BC848C SOT-23
+- Q4,Q6 BC848C SOT-23
 - R1,R4 330 0805
 - R2 220 0805
 - R3,R7 100 0805
 - R5,R11 10k 0805
-- R6,R8 33k 0805
+- R8 20k 0805
+- R6 33k 0805
 - R9 39 0805
 - R10 4k7 0805
-- R12,R13,R14 1k 0805
+- R12,R13,R14,R15 1k 0805
 - U1 LM2596SX-5.0
 - U2,U3 PC817B 
 
@@ -122,6 +123,13 @@ If it's not, do full hardware test above to identify the cause.
 ### Compatibility with Wemos D1 (ESP8266)
 
 The shield and library code are compatible with a Wemos D1 development board which is using ESP8266 instead of AVR chips. However, ESP8266 is using 3.3V logic so to make the shield work, you need to alter it.
+
+**Rev4 boards**
+
+- Use **Logic Voltage** jumper and switch Voltage to 3.3V (left side)
+
+<img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev4.JPG" width="32%"></img>
+<img src="https://raw.githubusercontent.com/jpraus/arduino-opentherm/master/doc/rev4-logic-jumper.JPG" width="32%"></img> 
 
 **Rev3 boards**
 

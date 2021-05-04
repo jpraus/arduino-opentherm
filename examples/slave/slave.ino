@@ -12,6 +12,10 @@
 #define THERMOSTAT_IN 2
 #define THERMOSTAT_OUT 4
 
+// Wemos D1 R32
+// #define THERMOSTAT_IN 26
+// #define THERMOSTAT_OUT 17
+
 OpenthermData message;
 
 void setup() {
@@ -29,7 +33,7 @@ void setup() {
  */
 void loop() {
   if (OPENTHERM::getMessage(message)) {
-    Serial.print("-> ");
+    Serial.print(F("-> "));
     OPENTHERM::printToSerial(message);
     Serial.println();
     delay(100); // Opentherm defines delay between request and response
@@ -44,7 +48,7 @@ void loop() {
 }
 
 void listenAfterResponse() {
-  Serial.print("<- ");
+  Serial.print(F("<- "));
   OPENTHERM::printToSerial(message);
   Serial.println();
   Serial.println();
